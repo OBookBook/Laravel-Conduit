@@ -96,8 +96,24 @@
 <body>
     <div class="container">
         <h1>タスクの追加</h1>
-        <form action="/todos" method="POST">
+
+        <!-- エラーメッセージを表示 -->
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <!-- フォーム -->
+        <form action="/todos" method="post">
             @csrf
+            @if ($errors->has('title'))
+            <p style="color: red;">{{ $errors->first('title') }}</p>
+            @endif
             <input type="text" name="title" placeholder="タスクを入力する">
             <button type="submit">保存する</button>
         </form>

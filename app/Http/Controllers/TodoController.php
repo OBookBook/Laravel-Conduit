@@ -20,11 +20,19 @@ class TodoController extends Controller
 
     public function store(Request $request)
     {
-        Todo::create([
-            'title' => $request->title,
+
+        $validatedData = $request->validate([
+            'title' => 'required',
+        ], [
+            'title.required' => 'タスクのタイトルを入力してください。',
         ]);
 
-        return $this->index();
+        Todo::create([
+            'title' => $validatedData['title']
+        ]);
+
+        return redirect('/todos');
+        // return $this->index();
     }
 
     public function show(string $id)
